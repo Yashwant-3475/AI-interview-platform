@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FiUserPlus, FiMail, FiLock, FiUser } from 'react-icons/fi';
 
 // Simple register page that talks to the backend API.
 // It sends name/email/password and can log the user in immediately (store token)
@@ -53,62 +54,95 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="row justify-content-center">
-            <div className="col-md-4">
-                <h2 className="mb-3 text-center">Register</h2>
+        <div className="row justify-content-center mt-5">
+            <div className="col-md-5 col-lg-4">
+                <div className="card shadow-lg border-0">
+                    <div className="card-body p-5">
+                        <div className="text-center mb-4">
+                            <div className="d-inline-block p-3 rounded-circle mb-3"
+                                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>
+                                <FiUserPlus size={32} color="white" />
+                            </div>
+                            <h2 className="fw-bold gradient-text">Create Account</h2>
+                            <p className="text-muted">Join us and start your interview prep</p>
+                        </div>
 
-                {/* Basic error and success messages */}
-                {error && <div className="alert alert-danger">{error}</div>}
-                {success && <div className="alert alert-success">{success}</div>}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="registerName" className="form-label">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            id="registerName"
-                            name="name"
-                            className="form-control"
-                            placeholder="Enter your name"
-                            required
-                        />
+                        {/* Basic error and success messages */}
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        {success && <div className="alert alert-success">{success}</div>}
+
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
+                                <label htmlFor="registerName" className="form-label">
+                                    <FiUser className="me-1" /> Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="registerName"
+                                    name="name"
+                                    className="form-control"
+                                    placeholder="Enter your name"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="registerEmail" className="form-label">
+                                    <FiMail className="me-1" /> Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="registerEmail"
+                                    name="email"
+                                    className="form-control"
+                                    placeholder="Enter your email"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="registerPassword" className="form-label">
+                                    <FiLock className="me-1" /> Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="registerPassword"
+                                    name="password"
+                                    className="form-control"
+                                    placeholder="Create a password"
+                                    required
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="btn btn-success w-100 d-flex align-items-center justify-content-center"
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Creating account...
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiUserPlus className="me-2" />
+                                        Create Account
+                                    </>
+                                )}
+                            </button>
+                        </form>
+
+                        <div className="text-center mt-4">
+                            <p className="text-muted mb-0">
+                                Already have an account?{' '}
+                                <a href="/login" className="fw-semibold" style={{ color: '#667eea', textDecoration: 'none' }}>
+                                    Sign in
+                                </a>
+                            </p>
+                        </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="registerEmail" className="form-label">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            name="email"
-                            className="form-control"
-                            placeholder="Enter your email"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="registerPassword" className="form-label">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="registerPassword"
-                            name="password"
-                            className="form-control"
-                            placeholder="Create a password"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-success w-100" disabled={loading}>
-                        {loading ? 'Creating account...' : 'Create Account'}
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     );
 };
 
 export default RegisterPage;
-
-

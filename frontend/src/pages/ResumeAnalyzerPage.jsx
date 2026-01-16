@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FiFileText, FiUpload, FiCheckCircle, FiXCircle, FiAlertCircle } from 'react-icons/fi';
 
 const ResumeAnalyzerPage = () => {
     const [file, setFile] = useState(null);
@@ -52,80 +53,147 @@ const ResumeAnalyzerPage = () => {
     };
 
     return (
-        <div className="row justify-content-center">
-            <div className="col-md-8">
-                <h2 className="mb-3 text-center">Resume Analyzer</h2>
-
-                {error && <div className="alert alert-danger mb-3">{error}</div>}
-
-                <form onSubmit={handleSubmit} className="mb-4">
-                    <div className="mb-3">
-                        <label htmlFor="resumeFile" className="form-label">
-                            Upload your PDF resume
-                        </label>
-                        <input
-                            type="file"
-                            id="resumeFile"
-                            accept=".pdf"
-                            className="form-control"
-                            onChange={handleFileChange}
-                            disabled={loading}
-                        />
+        <div className="row justify-content-center mt-4">
+            <div className="col-md-10 col-lg-9">
+                <div className="text-center mb-4">
+                    <div className="d-inline-block p-3 rounded-circle mb-3"
+                        style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                        <FiFileText size={32} color="white" />
                     </div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={loading || !file}
-                    >
-                        {loading ? 'Analyzing...' : 'Analyze Resume'}
-                    </button>
-                </form>
+                    <h2 className="fw-bold gradient-text">Resume Analyzer</h2>
+                    <p className="text-muted">Upload your resume to get instant skill analysis</p>
+                </div>
+
+                {error && (
+                    <div className="alert alert-danger d-flex align-items-center mb-4">
+                        <FiAlertCircle className="me-2" size={24} />
+                        {error}
+                    </div>
+                )}
+
+                <div className="card shadow-lg border-0 mb-4">
+                    <div className="card-body p-4">
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label htmlFor="resumeFile" className="form-label fw-semibold">
+                                    <FiUpload className="me-2" />
+                                    Upload your PDF resume
+                                </label>
+                                <input
+                                    type="file"
+                                    id="resumeFile"
+                                    accept=".pdf"
+                                    className="form-control"
+                                    onChange={handleFileChange}
+                                    disabled={loading}
+                                />
+                                {file && (
+                                    <small className="text-muted d-block mt-2">
+                                        Selected: <strong>{file.name}</strong>
+                                    </small>
+                                )}
+                            </div>
+                            <button
+                                type="submit"
+                                className="btn btn-primary btn-lg d-flex align-items-center"
+                                disabled={loading || !file}
+                            >
+                                {loading ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Analyzing...
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiFileText className="me-2" size={20} />
+                                        Analyze Resume
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 {analysis && (
-                    <div className="analysis-results">
-                        <div className="alert alert-info">
-                            <strong>Analysis Type:</strong> {analysis.analysisType}
-                            {analysis.note && <div className="small text-muted">{analysis.note}</div>}
+                    <div className="analysis-results" style={{ animation: 'fadeIn 0.5s ease' }}>
+                        <div className="alert alert-info d-flex align-items-center mb-4">
+                            <FiCheckCircle className="me-2" size={24} />
+                            <div>
+                                <strong>Analysis Type:</strong> {analysis.analysisType}
+                                {analysis.note && <div className="small text-muted mt-1">{analysis.note}</div>}
+                            </div>
                         </div>
 
-                        <div className="row mt-4">
-                            <div className="col-md-6">
-                                <div className="card">
-                                    <div className="card-header bg-success text-white">
-                                        <h5 className="mb-0">Matched Skills</h5>
+                        <div className="row">
+                            <div className="col-md-6 mb-4">
+                                <div className="card border-0 shadow">
+                                    <div className="card-header text-white"
+                                        style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>
+                                        <h5 className="mb-0 d-flex align-items-center">
+                                            <FiCheckCircle className="me-2" />
+                                            Matched Skills
+                                        </h5>
                                     </div>
                                     <div className="card-body">
                                         {analysis.matchedSkills.length > 0 ? (
-                                            <ul className="list-group list-group-flush">
+                                            <div className="d-flex flex-wrap gap-2">
                                                 {analysis.matchedSkills.map((skill, index) => (
-                                                    <li key={index} className="list-group-item">
+                                                    <span
+                                                        key={index}
+                                                        className="badge bg-success"
+                                                        style={{
+                                                            fontSize: '0.9rem',
+                                                            padding: '0.5rem 1rem',
+                                                            fontWeight: '500'
+                                                        }}
+                                                    >
+                                                        <FiCheckCircle className="me-1" size={14} />
                                                         {skill}
-                                                    </li>
+                                                    </span>
                                                 ))}
-                                            </ul>
+                                            </div>
                                         ) : (
-                                            <p className="text-muted">No skills matched.</p>
+                                            <p className="text-muted mb-0 d-flex align-items-center">
+                                                <FiAlertCircle className="me-2" />
+                                                No skills matched.
+                                            </p>
                                         )}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="col-md-6">
-                                <div className="card">
-                                    <div className="card-header bg-warning text-dark">
-                                        <h5 className="mb-0">Missing Skills</h5>
+                            <div className="col-md-6 mb-4">
+                                <div className="card border-0 shadow">
+                                    <div className="card-header text-white"
+                                        style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+                                        <h5 className="mb-0 d-flex align-items-center">
+                                            <FiXCircle className="me-2" />
+                                            Missing Skills
+                                        </h5>
                                     </div>
                                     <div className="card-body">
                                         {analysis.missingSkills.length > 0 ? (
-                                            <ul className="list-group list-group-flush">
+                                            <div className="d-flex flex-wrap gap-2">
                                                 {analysis.missingSkills.map((skill, index) => (
-                                                    <li key={index} className="list-group-item">
+                                                    <span
+                                                        key={index}
+                                                        className="badge bg-warning text-dark"
+                                                        style={{
+                                                            fontSize: '0.9rem',
+                                                            padding: '0.5rem 1rem',
+                                                            fontWeight: '500'
+                                                        }}
+                                                    >
+                                                        <FiXCircle className="me-1" size={14} />
                                                         {skill}
-                                                    </li>
+                                                    </span>
                                                 ))}
-                                            </ul>
+                                            </div>
                                         ) : (
-                                            <p className="text-muted">No missing skills found.</p>
+                                            <p className="text-muted mb-0 d-flex align-items-center">
+                                                <FiCheckCircle className="me-2" />
+                                                No missing skills found.
+                                            </p>
                                         )}
                                     </div>
                                 </div>

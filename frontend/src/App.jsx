@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import MockInterviewPage from './pages/MockInterviewPage.jsx';
 import ResumeAnalyzerPage from './pages/ResumeAnalyzerPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
+import { FiHome, FiLogOut, FiLogIn, FiUserPlus, FiFileText, FiVideo } from 'react-icons/fi';
 import './App.css';
 
 const Navbar = () => {
@@ -18,33 +19,55 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4 sticky-top">
             <div className="container">
-                <a className="navbar-brand" href="/">
+                <a className="navbar-brand d-flex align-items-center" href="/">
+                    <FiHome className="me-2" size={24} />
                     Interview Prep
                 </a>
-                <div className="navbar-nav align-items-center">
-                    {isAuthenticated ? (
-                        <>
-                            <a className="nav-link" href="/mock-interview">
-                                Mock Interview
-                            </a>
-                            <a className="nav-link" href="/resume-analyzer">
-                                Resume Analyzer
-                            </a>
-                            <button
-                                className="btn btn-outline-danger ms-2"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <a className="nav-link" href="/login">Login</a>
-                            <a className="nav-link" href="/register">Register</a>
-                        </>
-                    )}
+
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <div className="navbar-nav ms-auto align-items-center">
+                        {isAuthenticated ? (
+                            <>
+                                <a className="nav-link d-flex align-items-center" href="/mock-interview">
+                                    <FiVideo className="me-1" size={18} />
+                                    Mock Interview
+                                </a>
+                                <a className="nav-link d-flex align-items-center" href="/resume-analyzer">
+                                    <FiFileText className="me-1" size={18} />
+                                    Resume Analyzer
+                                </a>
+                                <button
+                                    className="btn btn-outline-danger ms-2 d-flex align-items-center"
+                                    onClick={handleLogout}
+                                >
+                                    <FiLogOut className="me-1" size={18} />
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <a className="nav-link d-flex align-items-center" href="/login">
+                                    <FiLogIn className="me-1" size={18} />
+                                    Login
+                                </a>
+                                <a className="nav-link d-flex align-items-center" href="/register">
+                                    <FiUserPlus className="me-1" size={18} />
+                                    Register
+                                </a>
+                            </>
+                        )}
+                    </div>
                 </div>
 
             </div>
